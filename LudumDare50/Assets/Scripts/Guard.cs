@@ -74,7 +74,7 @@ public class Guard : MonoBehaviour
     private void UpdateChase()
     {
         MoveTowardsTarget(PlayerStats.Instance.transform.position, WalkingSpeed * 3);
-        if(ReachedTarget(PlayerStats.Instance.transform.position, 0.6f))
+        if(ReachedTarget(PlayerStats.Instance.transform.position, 2.5f))
         {
             GameController.Instance.PlayerKilled();
         }
@@ -89,12 +89,17 @@ public class Guard : MonoBehaviour
 
     private bool ReachedTarget(Vector3 _target, float _tolerance)
     {
-        float distanceToTarget = Vector3.Distance(transform.position, _target);
+        float distanceToTarget = Vector2.Distance(GetVec2d(_target), GetVec2d(transform.position));
         return distanceToTarget <= _tolerance;
     }
 
     private void GameController_OnDayStarted()
     {
         Destroy(gameObject);
+    }
+
+    private Vector2 GetVec2d(Vector3 _v)
+    {
+        return new Vector2(_v.x, _v.z);
     }
 }

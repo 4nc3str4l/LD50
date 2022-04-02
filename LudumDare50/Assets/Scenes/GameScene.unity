@@ -2679,7 +2679,7 @@ MonoBehaviour:
   GameState: 0
   TimeUntilDawn: 120
   MissingHumansToKill: 1
-  GameOverLoader: {fileID: 0}
+  GameOverLoader: {fileID: 2051130498}
 --- !u!114 &2051130498
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,21 @@ public class VampireMovement : MonoBehaviour
         m_RigidBody = GetComponent<Rigidbody>();
     }
 
+    private void OnEnable()
+    {
+        GameController.OnNightStarted += GameController_OnNightStarted;
+    }
+
+    private void OnDisable()
+    {
+        GameController.OnNightStarted -= GameController_OnNightStarted;
+    }
+
+    private void GameController_OnNightStarted()
+    {
+        ResetPosAndRot();
+    }
+
     private void Start()
     {
         m_OriginalPosition = transform.position;
