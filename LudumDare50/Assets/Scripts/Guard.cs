@@ -11,6 +11,8 @@ public class Guard : MonoBehaviour
     private Rigidbody m_RigidBody;
     public float WalkingSpeed;
 
+    public float m_TimeUntilUnalert = 0;
+    public float m_AlertTime = 0;
 
     private enum State
     {
@@ -33,6 +35,7 @@ public class Guard : MonoBehaviour
 
     private void OwnerDistict_OnGoToBuildingRequired(int buldingIdx)
     {
+        Alert();
         // If we are already going to the target just ignore the event
         if(TargetPatrolPoint.IndexInArray == buldingIdx || (m_LoadedPath.Count > 0 &&  m_LoadedPath[m_LoadedPath.Count - 1].IndexInArray == buldingIdx))
         {
@@ -48,13 +51,16 @@ public class Guard : MonoBehaviour
 
     private void Update()
     {
+
+        float baseSpeed = !IsAlerted() ? WalkingSpeed : WalkingSpeed * 2;
+
         switch (m_CurrentState)
         {
             case State.CHASING:
-                UpdateChase(); 
+                UpdateChase(baseSpeed); 
                 break;
             case State.PATROL:
-                UpdatePatrol();
+                UpdatePatrol(baseSpeed);
                 break;
             default:
                 break;
@@ -82,9 +88,9 @@ public class Guard : MonoBehaviour
         m_CurrentState = State.CHASING;
     }
 
-    private void UpdatePatrol()
+    private void UpdatePatrol(float _baseSpeed)
     {
-        if(ReachedTarget(TargetPatrolPoint.transform.position, 1f))
+        if(ReachedTarget(TargetPatrolPoint.transform.position, 1.5f))
         {
             if (m_LoadedPath.Count == 0)
             {
@@ -96,7 +102,7 @@ public class Guard : MonoBehaviour
                 m_LoadedPath.RemoveAt(0);
             }
         }
-        MoveTowardsTarget(TargetPatrolPoint.transform.position, WalkingSpeed);
+        MoveTowardsTarget(TargetPatrolPoint.transform.position, _baseSpeed);
     }
 
     private void RecomputePath(int _target)
@@ -106,10 +112,10 @@ public class Guard : MonoBehaviour
         m_LoadedPath.RemoveAt(0);
     }
 
-    private void UpdateChase()
+    private void UpdateChase(float _baseSpeed)
     {
-        MoveTowardsTarget(PlayerStats.Instance.transform.position, WalkingSpeed * 3);
-        if(ReachedTarget(PlayerStats.Instance.transform.position, 2.5f))
+        MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 3);
+        if(ReachedTarget(PlayerStats.Instance.transform.position, 3.5f, false))
         {
             GameController.Instance.PlayerKilled();
         }
@@ -122,9 +128,13 @@ public class Guard : MonoBehaviour
         m_RigidBody.velocity = direction * _speed * Time.deltaTime;
     }
 
-    private bool ReachedTarget(Vector3 _target, float _tolerance)
+    private bool ReachedTarget(Vector3 _target, float _tolerance, bool _debug = false)
     {
         float distanceToTarget = Vector2.Distance(GetVec2d(_target), GetVec2d(transform.position));
+        if(_debug)
+        {
+            Debug.Log("Distance To Player " + distanceToTarget);
+        }
         return distanceToTarget <= _tolerance;
     }
 
@@ -136,5 +146,17 @@ public class Guard : MonoBehaviour
     private Vector2 GetVec2d(Vector3 _v)
     {
         return new Vector2(_v.x, _v.z);
+    }
+
+
+    private void Alert()
+    {
+        m_AlertTime += 5;
+        m_TimeUntilUnalert = Time.time + m_AlertTime;
+    }
+
+    private bool IsAlerted()
+    {
+        return m_TimeUntilUnalert >= Time.time;
     }
 }

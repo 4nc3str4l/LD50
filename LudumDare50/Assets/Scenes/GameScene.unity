@@ -2739,7 +2739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1399508129729305556, guid: 42f0ef4861a32144d850e85e8f5118a6, type: 3}
       propertyPath: NumWatchersToSpawn
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -8044,7 +8044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: GameOver
-  Delay: 5
+  Delay: 0.5
 --- !u!4 &2056646802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7093140658074977000, guid: c067cee3d5e35b449af90ca4ed42fc18, type: 3}
