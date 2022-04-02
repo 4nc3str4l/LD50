@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class District : MonoBehaviour
@@ -9,6 +11,8 @@ public class District : MonoBehaviour
     public PatrolPoint[] PatrolPoints;
 
     public GameObject GuardPrefab;
+
+    public event Action<int> OnGoToBuldingRequired;
 
     private void Awake()
     {
@@ -30,8 +34,6 @@ public class District : MonoBehaviour
         GameController.OnDayStarted += GameController_OnDayStarted;
         GameController.OnNightStarted += GameController_OnNightStarted;
     }
-
-
 
     private void OnDisable()
     {
@@ -61,7 +63,7 @@ public class District : MonoBehaviour
     public void SpawnGuard()
     {
         GameObject g = GameObject.Instantiate(GuardPrefab);
-        PatrolPoint p = PatrolPoints[Random.Range(0, PatrolPoints.Length)];
+        PatrolPoint p = PatrolPoints[UnityEngine.Random.Range(0, PatrolPoints.Length)];
         g.transform.position = p.transform.position;
         g.GetComponent<Guard>().Init(this, p);
     }
@@ -74,7 +76,7 @@ public class District : MonoBehaviour
     public PatrolPoint ChooseNextPatrolPoint(PatrolPoint _p)
     {
         int currentIdx = _p.IndexInArray;
-        if(Random.Range(0.0f, 1.0f) > 0.3f)
+        if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.3f)
         {
             currentIdx += 1;
         }
@@ -111,5 +113,48 @@ public class District : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    public List<PatrolPoint> GetShortestPathTo(int _current, int _patrolIndex)
+    {
+        if(_current == _patrolIndex)
+        {
+            return new List<PatrolPoint> { PatrolPoints[_current] };
+        }
+
+        List<PatrolPoint> p1 = new List<PatrolPoint>();
+        int pIdx = _current;
+        while(pIdx != _patrolIndex)
+        {
+            pIdx += 1;
+            if(pIdx >= PatrolPoints.Length)
+            {
+                pIdx = 0;
+            }
+            p1.Add(PatrolPoints[pIdx]);
+        }
+
+        pIdx = _current;
+        List<PatrolPoint> p2 = new List<PatrolPoint>();
+        while (pIdx != _patrolIndex)
+        {
+            pIdx -= 1;
+            if (pIdx < 0)
+            {
+                pIdx = PatrolPoints.Length -1;
+            }
+            p2.Add(PatrolPoints[pIdx]);
+        }
+        return p2.Count > p1.Count ? p1 : p2;
+    }
+
+    public void BuldingUnderAttack(int _idx)
+    {
+        OnGoToBuldingRequired?.Invoke(_idx);
+    }
+
+    public int GetRandomIndex()
+    {
+        return UnityEngine.Random.Range(0, PatrolPoints.Length);
     }
 }

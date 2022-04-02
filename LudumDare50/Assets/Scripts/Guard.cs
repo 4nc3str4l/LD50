@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Guard : MonoBehaviour
 {
     public District OwnerDistict;
-    private PatrolPoint TargetPatrolPoint;
-    private Rigidbody m_RigidBody;
 
+    private PatrolPoint TargetPatrolPoint;
+    private List<PatrolPoint> m_LoadedPath = new List<PatrolPoint>();
+
+    private Rigidbody m_RigidBody;
     public float WalkingSpeed;
 
 
@@ -24,6 +27,23 @@ public class Guard : MonoBehaviour
         TargetPatrolPoint = _p;
         WalkingSpeed = 300f + Random.Range(30, 60);
         m_CurrentState = State.PATROL;
+
+        OwnerDistict.OnGoToBuldingRequired += OwnerDistict_OnGoToBuildingRequired;
+    }
+
+    private void OwnerDistict_OnGoToBuildingRequired(int buldingIdx)
+    {
+        // If we are already going to the target just ignore the event
+        if(TargetPatrolPoint.IndexInArray == buldingIdx || (m_LoadedPath.Count > 0 &&  m_LoadedPath[m_LoadedPath.Count - 1].IndexInArray == buldingIdx))
+        {
+            return;
+        }
+        RecomputePath(buldingIdx);
+    }
+
+    private void OnDestroy()
+    {
+        OwnerDistict.OnGoToBuldingRequired -= OwnerDistict_OnGoToBuildingRequired;
     }
 
     private void Update()
@@ -66,9 +86,24 @@ public class Guard : MonoBehaviour
     {
         if(ReachedTarget(TargetPatrolPoint.transform.position, 1f))
         {
-            TargetPatrolPoint = OwnerDistict.ChooseNextPatrolPoint(TargetPatrolPoint);
+            if (m_LoadedPath.Count == 0)
+            {
+                m_LoadedPath = OwnerDistict.GetShortestPathTo(TargetPatrolPoint.IndexInArray, OwnerDistict.GetRandomIndex());
+            }
+            else
+            {
+                TargetPatrolPoint = m_LoadedPath[0];
+                m_LoadedPath.RemoveAt(0);
+            }
         }
         MoveTowardsTarget(TargetPatrolPoint.transform.position, WalkingSpeed);
+    }
+
+    private void RecomputePath(int _target)
+    {
+        m_LoadedPath = OwnerDistict.GetShortestPathTo(TargetPatrolPoint.IndexInArray, OwnerDistict.GetRandomIndex());
+        TargetPatrolPoint = m_LoadedPath[0];
+        m_LoadedPath.RemoveAt(0);
     }
 
     private void UpdateChase()

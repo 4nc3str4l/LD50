@@ -7,9 +7,11 @@ public class Bulding : MonoBehaviour
     public int StartDefensePoints = 3;
     public bool HumansInside = true;
     public bool Alarm = false;
+    public PatrolPoint ClosestPoint;
 
     private District m_OwnerDistrict;
 
+    public GameObject AlarmGo;
     public GameObject UIPos;
 
     private Vector3 m_OriginalPos;
@@ -26,7 +28,6 @@ public class Bulding : MonoBehaviour
         GameController.OnNightStarted += GameController_OnNightStarted;
     }
 
-
     private void OnDisable()
     {
         GameController.OnNightStarted -= GameController_OnNightStarted;
@@ -34,8 +35,10 @@ public class Bulding : MonoBehaviour
 
     private void GameController_OnNightStarted()
     {
+        AlarmGo.SetActive(Alarm);
+
         // Skip buldings that haven't been attacked
-        if(HumansInside)
+        if (HumansInside)
         {
             return;
         }
@@ -44,10 +47,16 @@ public class Bulding : MonoBehaviour
         DefensePoints = StartDefensePoints;
         HumansInside = true;
 
-        if(Random.Range(0, 1.0f) > 0.8f)
+        if(!Alarm)
         {
-            Alarm = true;
+            if (Random.Range(0, 1.0f) > 0.8f)
+            {
+                Alarm = true;
+            }
         }
+
+        AlarmGo.SetActive(Alarm);
+
 
         // Inform the district about the attack
         m_OwnerDistrict.OnHomeAttacked();
@@ -62,6 +71,11 @@ public class Bulding : MonoBehaviour
         }
 
         DefensePoints -= _dmg;
+
+        if(Alarm)
+        {
+            m_OwnerDistrict.BuldingUnderAttack(ClosestPoint.IndexInArray);
+        }
 
         if(DefensePoints <= 0)
         {
