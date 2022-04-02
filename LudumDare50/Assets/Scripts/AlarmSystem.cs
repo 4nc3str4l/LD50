@@ -1,10 +1,12 @@
 ﻿
 using UnityEngine;
+using DG.Tweening;
 
 public class AlarmSystem : MonoBehaviour
 {
     private AudioSource m_Source;
     private Material m_Material;
+    private Light m_Light;
 
     private float m_EnabledUntil = 0;
     private float m_StartedIn  = 0;
@@ -28,6 +30,13 @@ public class AlarmSystem : MonoBehaviour
     {
         m_Source = GetComponent<AudioSource>();
         m_Material = GetComponent<Renderer>().material;
+        m_Light = GetComponentInChildren<Light>(true);
+        m_Light.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        m_Light.gameObject.SetActive(IsEnabled);
     }
 
     public void Ring()
