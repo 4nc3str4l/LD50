@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class District : MonoBehaviour
 {
+    public int DistrictNumber;
     public int NumWatchersToSpawn = 0;
     public int KillCounter = 0;
     public int GuardKillCounter = 0;
+
+    public TMP_Text DistrictText;
 
     public PatrolPoint[] PatrolPoints;
 
@@ -16,7 +20,10 @@ public class District : MonoBehaviour
 
     private void Awake()
     {
-        for(int i = 0; i < PatrolPoints.Length; ++i)
+
+        DistrictText.text = "District " + DistrictNumber;
+
+        for (int i = 0; i < PatrolPoints.Length; ++i)
         {
             PatrolPoints[i].IndexInArray = i;
         }
