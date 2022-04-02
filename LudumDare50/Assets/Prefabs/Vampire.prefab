@@ -243,6 +243,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6910031278727355672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8363100999726785710}
+  m_Layer: 0
+  m_Name: AttackOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8363100999726785710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910031278727355672}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.73, y: 1.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8019993295959608835}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6924265936863743360
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +367,7 @@ GameObject:
   - component: {fileID: 2848599044230452295}
   - component: {fileID: 717697836524907835}
   - component: {fileID: 1951542398510858973}
+  - component: {fileID: 6376962929630473672}
   m_Layer: 0
   m_Name: Vampire
   m_TagString: Untagged
@@ -359,6 +390,7 @@ Transform:
   - {fileID: 399489800712293504}
   - {fileID: 374559801842395201}
   - {fileID: 8028490929361782293}
+  - {fileID: 8363100999726785710}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -419,5 +451,22 @@ MonoBehaviour:
   Health: 100
   HumansToKill: 1
   Speed: 200
+  NightDuration: 120
   Strength: 1
   Resistence: 0
+--- !u!114 &6376962929630473672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207850424326395065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7879dacdab60aa3458ab9602f749d210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackOrigin: {fileID: 6910031278727355672}
+  ToAttack:
+    serializedVersion: 2
+    m_Bits: 8

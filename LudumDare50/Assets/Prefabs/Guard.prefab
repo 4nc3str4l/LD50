@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 636399256500632775}
   - component: {fileID: 919132148500399296}
-  m_Layer: 0
+  - component: {fileID: 1919018822374821561}
+  m_Layer: 3
   m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,6 +50,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73eeee9be90d7d0489c7ce4c3cde08af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1919018822374821561
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260964051582625405}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.8025055
+  m_Height: 3.8524823
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.4629133, z: 0}
 --- !u!1 &347387614878607688
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +75,7 @@ GameObject:
   - component: {fileID: 4369995025496926114}
   - component: {fileID: 4996751217828467004}
   - component: {fileID: 3485235435623861731}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +156,7 @@ GameObject:
   - component: {fileID: 3930357679132250390}
   - component: {fileID: 6891242799476864206}
   - component: {fileID: 3238807046522432522}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +237,7 @@ GameObject:
   - component: {fileID: 7765614654266100853}
   - component: {fileID: 1630995152845116772}
   - component: {fileID: 285910539281527396}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Left Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +318,7 @@ GameObject:
   - component: {fileID: 7109768250767039109}
   - component: {fileID: 6838884138079444645}
   - component: {fileID: 6513802415865166494}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Right Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +399,7 @@ GameObject:
   - component: {fileID: 7623199782722882822}
   - component: {fileID: 50251509933985690}
   - component: {fileID: 6515892644268186899}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +480,7 @@ GameObject:
   - component: {fileID: 7067002629254823492}
   - component: {fileID: 2282340711883824960}
   - component: {fileID: 5265773895731176311}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
