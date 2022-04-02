@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class GameController : MonoBehaviour
     public static event Action OnDayStarted;
     public static event Action OnNightStarted;
 
+    public LoadScene GameOverLoader;
+    
     private void Awake()
     {
         Instance = this;
@@ -102,6 +105,11 @@ public class GameController : MonoBehaviour
     private void UpdateNight()
     {
         TimeUntilDawn = m_DayTime - Time.time;
+
+        if(TimeUntilDawn <= 0)
+        {
+            PlayerKilled();
+        }
     }
 
     private void UpdateExplaining()
@@ -147,5 +155,10 @@ public class GameController : MonoBehaviour
     {
         m_PlayerStats.Strength += 1;
         StartNight();
+    }
+
+    public void PlayerKilled()
+    {
+        GameOverLoader.Execute();
     }
 }

@@ -991,7 +991,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1399508129729305556, guid: 42f0ef4861a32144d850e85e8f5118a6, type: 3}
       propertyPath: NumWatchersToSpawn
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -2641,6 +2641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2051130496}
   - component: {fileID: 2051130497}
+  - component: {fileID: 2051130498}
   m_Layer: 0
   m_Name: _SCRIPTS
   m_TagString: Untagged
@@ -2678,6 +2679,21 @@ MonoBehaviour:
   GameState: 0
   TimeUntilDawn: 120
   MissingHumansToKill: 1
+  GameOverLoader: {fileID: 0}
+--- !u!114 &2051130498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051130495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec80da1237b58d48a7d6d59567bb706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneName: GameOver
+  Delay: 5
 --- !u!1 &2094659532
 GameObject:
   m_ObjectHideFlags: 0

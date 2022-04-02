@@ -74,6 +74,10 @@ public class Guard : MonoBehaviour
     private void UpdateChase()
     {
         MoveTowardsTarget(PlayerStats.Instance.transform.position, WalkingSpeed * 3);
+        if(ReachedTarget(PlayerStats.Instance.transform.position, 0.6f))
+        {
+            GameController.Instance.PlayerKilled();
+        }
     }
 
     private void MoveTowardsTarget(Vector3 _t, float _speed)
