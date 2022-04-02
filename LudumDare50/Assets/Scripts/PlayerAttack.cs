@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerAttack : MonoBehaviour
     public GameObject AttackOrigin;
 
     public LayerMask ToAttack;
+
 
     private void Awake()
     {
@@ -66,7 +68,30 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log("Attacking Building");
                 b.Owner.GetAttacked(m_Stats.Strength);
+
+                if(b.Owner.DoorDestroyed())
+                {
+                    StartCoroutine(DoHumanAssasinationAnimation(b.Owner));
+                }
             }
         }
+    }
+
+    IEnumerator DoHumanAssasinationAnimation(Bulding _toAttack)
+    {
+        GameController.Instance.SetKillingState();
+
+        Vector3 target = new Vector3(_toAttack.transform.position.x, transform.position.y, _toAttack.transform.position.z);
+        Vector3 originPos = transform.position;
+    
+        transform.DOJump(_toAttack.transform.position, 0.5f, 1, 2);
+        yield return new WaitForSeconds(2f);
+        Debug.Log("Play some sound here!");
+        transform.forward = -transform.forward;
+        transform.DOMove(originPos, 1).OnComplete(() => {
+            GameController.Instance.ClearKillingState();
+        });
+    
+ 
     }
 }

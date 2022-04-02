@@ -6,14 +6,35 @@ public class VampireMovement : MonoBehaviour
     private Rigidbody m_RigidBody;
     private PlayerStats m_PlayerStats;
 
+    private Vector3 m_OriginalPosition;
+    private Quaternion m_OriginalRotation;
+
     private void Awake()
     {
         m_PlayerStats = GetComponent<PlayerStats>();
         m_RigidBody = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        m_OriginalPosition = transform.position;
+        m_OriginalRotation = transform.rotation;
+    }
+
+
+    public void ResetPosAndRot()
+    {
+        transform.position = m_OriginalPosition;
+        transform.rotation = m_OriginalRotation;
+    }
+
     private void FixedUpdate()
     {
+        if (GameController.Instance.GameState != GameState.NIGHT)
+        {
+            return;
+        }
+
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
         m_RigidBody.velocity = (-transform.right * vertical) * m_PlayerStats.Speed * Time.fixedDeltaTime;

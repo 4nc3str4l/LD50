@@ -3,4 +3,5 @@
     EXPLAINING,
     NIGHT,
     DAY,
+    KILLING,
 }
