@@ -6,6 +6,11 @@ public class Bulding : MonoBehaviour
     public bool HumansInside = true;
     public bool Alarm = false;
 
+    public GameObject UIPos;
 
+    private void Start()
+    {
+        InGameUI.Instance.SpawnHomeUI(this);
+    }
 
 }
