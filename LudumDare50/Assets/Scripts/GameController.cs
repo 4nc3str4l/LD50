@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -62,18 +63,7 @@ public class GameController : MonoBehaviour
 
     public void StartNight()
     {
-        if(m_PlayerStats.HumansToKill >= 1)
-        {
-            if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f)
-            {
-                m_PlayerStats.HumansToKill += 1;
-            }
-        }
-        else
-        {
-            m_PlayerStats.HumansToKill = 1;
-        }
-
+        m_PlayerStats.HumansToKill += 1;
         m_NightStartedTime = Time.time;
         TimeUntilDawn = m_PlayerStats.NightDuration;
         m_DayTime = Time.time + m_PlayerStats.NightDuration;
@@ -127,21 +117,14 @@ public class GameController : MonoBehaviour
         GameState = GameState.NIGHT;
     }
 
-    public void FireOnHumanKilled()
+    public void FireOnHumanKilled(int _numHumans)
     {
-        MissingHumansToKill -= 1;
-        if (MissingHumansToKill < 0)
-        {
-            MissingHumansToKill = 0;
-        }
-
-        OnHumanKilled?.Invoke(MissingHumansToKill);
-        OnHumanKillCounterUpdate?.Invoke(MissingHumansToKill);
+        StartCoroutine(AnounceDeaths(_numHumans));
     }
 
     public void IncreaseSpeeed()
     {
-        m_PlayerStats.Speed += m_PlayerStats.Speed * 0.03f;
+        m_PlayerStats.Speed += m_PlayerStats.Speed * 0.05f;
         StartNight();
     }
 
@@ -160,5 +143,20 @@ public class GameController : MonoBehaviour
     public void PlayerKilled()
     {
         GameOverLoader.Execute();
+    }
+
+    IEnumerator AnounceDeaths(int _numHumans)
+    {
+
+        yield return new WaitForSeconds(1);
+        MissingHumansToKill -= _numHumans;
+        if (MissingHumansToKill < 0)
+        {
+            MissingHumansToKill = 0;
+        }
+
+        OnHumanKilled?.Invoke(MissingHumansToKill);
+        OnHumanKillCounterUpdate?.Invoke(MissingHumansToKill);
+
     }
 }

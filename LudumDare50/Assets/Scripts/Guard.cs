@@ -36,6 +36,7 @@ public class Guard : MonoBehaviour
     private void OwnerDistict_OnGoToBuildingRequired(int buldingIdx)
     {
         Alert();
+
         // If we are already going to the target just ignore the event
         if(TargetPatrolPoint.IndexInArray == buldingIdx || (m_LoadedPath.Count > 0 &&  m_LoadedPath[m_LoadedPath.Count - 1].IndexInArray == buldingIdx))
         {
@@ -52,7 +53,7 @@ public class Guard : MonoBehaviour
     private void Update()
     {
 
-        float baseSpeed = !IsAlerted() ? WalkingSpeed : WalkingSpeed * 2;
+        float baseSpeed = !IsAlerted() ? WalkingSpeed : WalkingSpeed * 1.1f;
 
         switch (m_CurrentState)
         {
@@ -107,7 +108,7 @@ public class Guard : MonoBehaviour
 
     private void RecomputePath(int _target)
     {
-        m_LoadedPath = OwnerDistict.GetShortestPathTo(TargetPatrolPoint.IndexInArray, OwnerDistict.GetRandomIndex());
+        m_LoadedPath = OwnerDistict.GetShortestPathTo(TargetPatrolPoint.IndexInArray, _target);
         TargetPatrolPoint = m_LoadedPath[0];
         m_LoadedPath.RemoveAt(0);
     }
@@ -151,7 +152,7 @@ public class Guard : MonoBehaviour
 
     private void Alert()
     {
-        m_AlertTime += 5;
+        m_AlertTime = 10;
         m_TimeUntilUnalert = Time.time + m_AlertTime;
     }
 

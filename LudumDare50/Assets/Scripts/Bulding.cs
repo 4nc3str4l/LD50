@@ -1,10 +1,12 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class Bulding : MonoBehaviour
 {
     public int DefensePoints = 3;
     public int StartDefensePoints = 3;
+    public int NumHumans = 1;
     public bool HumansInside = true;
     public bool Alarm = false;
     public PatrolPoint ClosestPoint;
@@ -16,8 +18,13 @@ public class Bulding : MonoBehaviour
 
     private Vector3 m_OriginalPos;
 
+    public AlarmSystem AlarmSys;
+
+    public static event Action<Bulding, int> OnBuldingKilled;
+
     private void Start()
     {
+        AlarmSys = GetComponentInChildren<AlarmSystem>();
         m_OwnerDistrict = GetComponentInParent<District>();
         InGameUI.Instance.SpawnHomeUI(this);
         m_OriginalPos = transform.position;
@@ -35,6 +42,30 @@ public class Bulding : MonoBehaviour
 
     private void GameController_OnNightStarted()
     {
+
+        float rHumans = UnityEngine.Random.Range(0, 1.0f);
+
+        if(rHumans < 0.5f)
+        {
+            NumHumans = 1;
+        }
+        else if(rHumans >= 0.5f && rHumans < 0.8f)
+        {
+            NumHumans = 2;
+        }
+        else if(rHumans >= 0.8f && rHumans < 0.95f)
+        {
+            NumHumans = 3;
+        }
+        else if (rHumans >= 0.95f && rHumans < 0.99f)
+        {
+            NumHumans = 6;
+        }
+        else
+        {
+            NumHumans = 5;
+        }
+
         AlarmGo.SetActive(Alarm);
 
         // Skip buldings that haven't been attacked
@@ -43,20 +74,19 @@ public class Bulding : MonoBehaviour
             return;
         }
 
-        StartDefensePoints += Random.Range(2, 10);
+        StartDefensePoints += UnityEngine.Random.Range(2, 10);
         DefensePoints = StartDefensePoints;
         HumansInside = true;
 
         if(!Alarm)
         {
-            if (Random.Range(0, 1.0f) > 0.8f)
+            if (UnityEngine.Random.Range(0, 1.0f) > 0.8f)
             {
                 Alarm = true;
             }
         }
 
         AlarmGo.SetActive(Alarm);
-
 
         // Inform the district about the attack
         m_OwnerDistrict.OnHomeAttacked();
@@ -75,13 +105,15 @@ public class Bulding : MonoBehaviour
         if(Alarm)
         {
             m_OwnerDistrict.BuldingUnderAttack(ClosestPoint.IndexInArray);
+            AlarmSys.Ring();
         }
 
         if(DefensePoints <= 0)
         {
             DefensePoints = 0;
             HumansInside = false;
-            GameController.Instance.FireOnHumanKilled();
+            GameController.Instance.FireOnHumanKilled(NumHumans);
+            OnBuldingKilled?.Invoke(this, NumHumans);
         }
 
         transform.DOShakePosition(0.1f, 0.1f).OnComplete(() =>

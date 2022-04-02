@@ -1,10 +1,42 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class Portal : MonoBehaviour
 {
     // Start is called before the first frame update
 
     public GameObject Door;
+
+    public static Portal Instance;
+
+    public GameObject SoulPrefab;
+    public Vector3 m_InitialPosition;
+
+    private void Awake()
+    {
+        Instance = this;
+        m_InitialPosition = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        Bulding.OnBuldingKilled += Bulding_OnBuldingKilled;
+    }
+
+    private void OnDisable()
+    {
+        Bulding.OnBuldingKilled -= Bulding_OnBuldingKilled;
+    }
+
+    private void Bulding_OnBuldingKilled(Bulding _target, int _numKilled)
+    {
+        for(int i = 0; i < _numKilled; ++i)
+        {
+            GameObject sp = GameObject.Instantiate(SoulPrefab);
+            sp.transform.position = _target.transform.position + Vector3.up * 4.0f;
+            sp.GetComponent<Soul>().Init(Random.Range(5.0f, 10.0f));
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,9 +75,17 @@ public class Portal : MonoBehaviour
         }
     }
 
-    private bool CanEnterPortal()
+    public bool CanEnterPortal()
     {
         return GameController.Instance.MissingHumansToKill == 0;
+    }
+
+
+    public void Shake()
+    {
+        transform.DOShakePosition(1.0f).OnComplete(() => {
+            transform.position = m_InitialPosition;
+        });
     }
 
 }

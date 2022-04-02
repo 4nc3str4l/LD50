@@ -1,10 +1,12 @@
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class UIDayTime : MonoBehaviour
 {
 
     private CanvasGroup m_CanvasGroup;
+    public TMP_Text TxtNightsSurvied;
 
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class UIDayTime : MonoBehaviour
         m_CanvasGroup.DOFade(1, 1);
         m_CanvasGroup.interactable = true;
         m_CanvasGroup.blocksRaycasts = true;
+        TxtNightsSurvied.text = Storage.GetNightsSurvived().ToString();
     }
 
     private void OnDisable()

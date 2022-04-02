@@ -50,9 +50,11 @@ public class VampireMovement : MonoBehaviour
             return;
         }
 
+        transform.position = new Vector3(transform.position.x, m_OriginalPosition.y + Mathf.Sin(Time.time) * 0.3f, transform.position.z);
+
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
         m_RigidBody.velocity = (-transform.right * vertical) * m_PlayerStats.Speed * Time.fixedDeltaTime;
-        transform.Rotate((transform.up * horizontal) * 100 * Time.fixedDeltaTime);
+        transform.Rotate((transform.up * horizontal) * 200 * Time.fixedDeltaTime);
     }
 }
