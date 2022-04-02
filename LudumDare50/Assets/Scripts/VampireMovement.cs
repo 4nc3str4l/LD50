@@ -13,6 +13,9 @@ public class VampireMovement : MonoBehaviour
     {
         m_PlayerStats = GetComponent<PlayerStats>();
         m_RigidBody = GetComponent<Rigidbody>();
+
+        m_OriginalPosition = transform.position;
+        m_OriginalRotation = transform.rotation;
     }
 
     private void OnEnable()
@@ -30,11 +33,6 @@ public class VampireMovement : MonoBehaviour
         ResetPosAndRot();
     }
 
-    private void Start()
-    {
-        m_OriginalPosition = transform.position;
-        m_OriginalRotation = transform.rotation;
-    }
 
 
     public void ResetPosAndRot()

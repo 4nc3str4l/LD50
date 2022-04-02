@@ -24,7 +24,7 @@ public class Bulding : MonoBehaviour
 
     private void Start()
     {
-        AlarmSys = GetComponentInChildren<AlarmSystem>();
+        AlarmSys = GetComponentInChildren<AlarmSystem>(true);
         m_OwnerDistrict = GetComponentInParent<District>();
         InGameUI.Instance.SpawnHomeUI(this);
         m_OriginalPos = transform.position;
