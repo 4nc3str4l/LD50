@@ -10,6 +10,8 @@ public class InGameUI : MonoBehaviour
     public TMP_Text TxtHumansToKill;
 
     public TMP_Text TxtSoulsToCollect;
+
+    public CanvasGroup PannelGoBack;
     public TMP_Text TxtGoBack;
 
     public TMP_Text TxtOldSouls;
@@ -130,7 +132,7 @@ public class InGameUI : MonoBehaviour
     {
         TxtTimeUntilDawn.text = "Time until dawn: " + FormatTime(GameController.Instance.TimeControl.TimeUntilDawn);
         ProgTimeUntilDawn.SetProgress(GameController.Instance.TimeControl.TimeUntilDawn/PlayerStats.Instance.NightDuration);
-        TxtGoBack.enabled = Portal.Instance.CanEnterPortal() && GameController.Instance.GameState == GameState.NIGHT;
+        PannelGoBack.alpha = Portal.Instance.CanEnterPortal() && GameController.Instance.GameState == GameState.NIGHT ? 1 : 0;
         TxtOldSouls.text = GameController.Instance.Bank.Balance.ToString();
 
         if(GameController.Instance.MissingSoulsToCollect < 0)

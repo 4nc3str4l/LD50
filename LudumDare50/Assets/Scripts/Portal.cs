@@ -62,7 +62,6 @@ public class Portal : MonoBehaviour
         {
             if (!Door.activeSelf)
             {
-                Debug.Log("Enabling Portal");
                 Door.SetActive(true);
             }
         }
@@ -70,7 +69,6 @@ public class Portal : MonoBehaviour
         {
             if (Door.activeSelf)
             {
-                Debug.Log("Disabling Portal");
                 Door.SetActive(false);
             }
         }

@@ -123,7 +123,6 @@ public class Guard : MonoBehaviour
         {
             RecomputePath(OwnerDistict.GetRandomIndex());
             m_SpontaneusWayChange = Time.time + TIME_TO_SPONTANEOUS_CHANGE + Random.Range(-10f, 10f);
-            Debug.Log("Spontaneous Desicion");
         }
     }
 
@@ -203,7 +202,7 @@ public class Guard : MonoBehaviour
         }
         else
         {
-            MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 2);
+            MoveTowardsTarget(PlayerStats.Instance.transform.position, Mathf.Min(_baseSpeed * 2, PlayerStats.Instance.Speed * 1.05f));
         }
     }
 

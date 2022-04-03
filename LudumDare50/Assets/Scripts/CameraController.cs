@@ -4,7 +4,7 @@ public class CameraController : MonoBehaviour
 {
     public Transform Target;
 
-    private float m_Speed = 0.125f;
+    private float m_Speed = 2f;
 
     private void LateUpdate()
     {
