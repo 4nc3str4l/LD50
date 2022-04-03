@@ -38,6 +38,7 @@ public class UITransmutationSoul : MonoBehaviour
 
     public void Init(Transform _origin, float _timeToTravel, Transform _target, Action _onComplete)
     {
+        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulTransmutationStart, 0.7f);
         Vector3 originalPosition = _origin.position;
         Vector3 randomizedPosition = originalPosition + new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), 0);
         transform.position = originalPosition;
@@ -52,6 +53,7 @@ public class UITransmutationSoul : MonoBehaviour
         transform.DOMove(randomizedPosition, _timeToTravel / 3).OnComplete(() => {
             transform.DOMove(_target.transform.position, _timeToTravel / 3 * 2).OnComplete(() => {
                 Destroy(gameObject, 0.05f);
+                Jukebox.Instance.PlaySound(Jukebox.Instance.SoulTransmutationEnd, 0.4f);
                 _onComplete?.Invoke();
             });
         });

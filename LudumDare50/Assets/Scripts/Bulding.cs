@@ -112,8 +112,21 @@ public class Bulding : MonoBehaviour
         {
             DefensePoints = 0;
             HumansInside = false;
-            GameController.Instance.FireOnHumanKilled(NumHumans);
-            OnBuldingKilled?.Invoke(this, NumHumans);
+
+            Scheduler.Instance.ExecuteIn(() =>
+            {
+                GameController.Instance.FireOnHumanKilled(NumHumans);
+                OnBuldingKilled?.Invoke(this, NumHumans);
+            }, 1.5f);
+
+            Jukebox.Instance.PlaySound(Jukebox.Instance.DoorBreak, 0.6f);
+            Jukebox.Instance.PlayRandomPeapoleReaction(0.7f, 0.3f);
+            Jukebox.Instance.PlaySoundDelayed(Jukebox.Instance.Crunch, 0.7f, 1.25f);
+            Jukebox.Instance.PlayRandomAttack(0.6f, 0.9f);
+        }
+        else
+        {
+            Jukebox.Instance.PlayRandomDoorHit(0.7f);
         }
 
         transform.DOShakePosition(0.1f, 0.1f).OnComplete(() =>

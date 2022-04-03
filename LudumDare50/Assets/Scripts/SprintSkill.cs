@@ -12,6 +12,7 @@
     {
         m_SpeedIncrease = PlayerStats.Instance.Speed;
         PlayerStats.Instance.Speed += m_SpeedIncrease;
+        Jukebox.Instance.PlaySound(Jukebox.Instance.Sprint, 0.6f);
     }
 
 

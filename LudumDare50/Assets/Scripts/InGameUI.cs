@@ -64,9 +64,13 @@ public class InGameUI : MonoBehaviour
     {
         for(int i = 0; i < numSouls; ++i)
         {
-            GameObject soulVisuals = GameObject.Instantiate(UITravelingSoulPrefab);
-            soulVisuals.transform.SetParent(transform);
-            soulVisuals.GetComponent<UITravelingSoul>().Init(_target, 2f, SoulImage.transform);
+            Scheduler.Instance.ExecuteIn(() =>
+            {
+                GameObject soulVisuals = GameObject.Instantiate(UITravelingSoulPrefab);
+                soulVisuals.transform.SetParent(transform);
+                soulVisuals.GetComponent<UITravelingSoul>().Init(_target, 2f, SoulImage.transform);
+            }, i * 0.15f);
+
         }
     }
 

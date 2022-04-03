@@ -46,6 +46,7 @@ public class Portal : MonoBehaviour
             {
                 Debug.Log("Player In Portal");
                 GameController.Instance.StartDay();
+                Jukebox.Instance.PlaySound(Jukebox.Instance.PortalEnter, 0.7f);
             }
             else
             {

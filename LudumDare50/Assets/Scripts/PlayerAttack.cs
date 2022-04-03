@@ -49,6 +49,8 @@ public class PlayerAttack : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, or.y, 0);
         });
 
+        Jukebox.Instance.PlayRandomAttack(0.6f, 0.1f);
+
         m_TimeToNextAttack = Time.time + m_AttackRate;
 
         Ray r = new Ray(AttackOrigin.transform.position, AttackOrigin.transform.right);

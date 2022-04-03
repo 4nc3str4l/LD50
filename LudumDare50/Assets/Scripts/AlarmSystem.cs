@@ -31,12 +31,15 @@ public class AlarmSystem : MonoBehaviour
         m_Source = GetComponent<AudioSource>();
         m_Material = GetComponent<Renderer>().material;
         m_Light = GetComponentInChildren<Light>(true);
+        m_Source.mute = true;
         m_Light.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         m_Light.gameObject.SetActive(IsEnabled);
+        m_Source.mute = !IsEnabled;
+        m_Source.volume = IsEnabled ? 0.2f * VolumeMaster.Instance.Volume : 0f;
     }
 
     public void Ring()
@@ -45,6 +48,7 @@ public class AlarmSystem : MonoBehaviour
         m_EnabledUntil = m_StartedIn + m_RingTime;
         Debug.Log("We sould play the alarm sound");
         Debug.Log("Make lights blink!");
+
     }
 
 }

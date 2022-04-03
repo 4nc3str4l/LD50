@@ -17,6 +17,7 @@ public class UITravelingSoul : MonoBehaviour
 
         transform.DOMove(randomizedPosition, _timeToTravel / 3).OnComplete(() => {
             transform.DOMove(_target.transform.position, _timeToTravel / 3 * 2).OnComplete(() => {
+                Jukebox.Instance.PlaySound(Jukebox.Instance.SoulTransmutationEnd, 0.4f);
                 Destroy(gameObject, 0.05f);
             });
         });
