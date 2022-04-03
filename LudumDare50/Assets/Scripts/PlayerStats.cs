@@ -5,7 +5,7 @@ public class PlayerStats : MonoBehaviour
     public static PlayerStats Instance;
 
     public float Health = 100.0f;
-    public int HumansToKill = 0;
+    public int SoulsToCollect = 0;
     public float Speed = 200.0f;
     public float NightDuration = 120f;
     public int Strength = 1;

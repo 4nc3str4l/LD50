@@ -77,7 +77,7 @@ public class Portal : MonoBehaviour
 
     public bool CanEnterPortal()
     {
-        return GameController.Instance.MissingHumansToKill == 0;
+        return GameController.Instance.MissingSoulsToCollect <= 0;
     }
 
 

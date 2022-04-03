@@ -20,7 +20,5 @@ public class UITravelingSoul : MonoBehaviour
                 Destroy(gameObject, 0.05f);
             });
         });
-
-
     }
 }

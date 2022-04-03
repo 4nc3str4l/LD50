@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class GameController : MonoBehaviour
     private float m_NightStartedTime = 0;
     private float m_DayTime = 0;
 
-    public int MissingHumansToKill = 1;
+    public int MissingSoulsToCollect = 1;
 
     private PlayerStats m_PlayerStats;
 
@@ -28,7 +27,9 @@ public class GameController : MonoBehaviour
     public static event Action OnNightStarted;
 
     public LoadScene GameOverLoader;
-    
+
+    public SoulBank Bank;
+
     private void Awake()
     {
         Instance = this;
@@ -63,18 +64,22 @@ public class GameController : MonoBehaviour
 
     public void StartNight()
     {
-        m_PlayerStats.HumansToKill += 1;
+        m_PlayerStats.SoulsToCollect += 1;
         m_NightStartedTime = Time.time;
         TimeUntilDawn = m_PlayerStats.NightDuration;
         m_DayTime = Time.time + m_PlayerStats.NightDuration;
-        MissingHumansToKill = m_PlayerStats.HumansToKill;
-        OnHumanKillCounterUpdate?.Invoke(MissingHumansToKill);
+        MissingSoulsToCollect = m_PlayerStats.SoulsToCollect;
+        OnHumanKillCounterUpdate?.Invoke(MissingSoulsToCollect);
         GameState = GameState.NIGHT;
         OnNightStarted?.Invoke();
+
+        Bank.TransmuteSouls();
+
     }
 
     public void StartDay()
     {
+        Bank.DepositToTransmute(Mathf.Abs(MissingSoulsToCollect));
         NumNightsSurvived += 1;
         Storage.SetNightsSurvived(NumNightsSurvived);
         PlayerPrefs.SetInt("NightsSurvived", NumNightsSurvived);
@@ -147,16 +152,10 @@ public class GameController : MonoBehaviour
 
     IEnumerator AnounceDeaths(int _numHumans)
     {
-
         yield return new WaitForSeconds(1);
-        MissingHumansToKill -= _numHumans;
-        if (MissingHumansToKill < 0)
-        {
-            MissingHumansToKill = 0;
-        }
-
-        OnHumanKilled?.Invoke(MissingHumansToKill);
-        OnHumanKillCounterUpdate?.Invoke(MissingHumansToKill);
+        MissingSoulsToCollect -= _numHumans;
+        OnHumanKilled?.Invoke(MissingSoulsToCollect);
+        OnHumanKillCounterUpdate?.Invoke(MissingSoulsToCollect);
 
     }
 }
