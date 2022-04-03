@@ -38,7 +38,7 @@ public class UITransmutationSoul : MonoBehaviour
 
     public void Init(Transform _origin, float _timeToTravel, Transform _target, Action _onComplete)
     {
-        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulTransmutationStart, 0.7f);
+        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulTransmutationStart, 0.4f);
         Vector3 originalPosition = _origin.position;
         Vector3 randomizedPosition = originalPosition + new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), 0);
         transform.position = originalPosition;

@@ -120,9 +120,9 @@ public class Bulding : MonoBehaviour
             }, 1.5f);
 
             Jukebox.Instance.PlaySound(Jukebox.Instance.DoorBreak, 0.6f);
-            Jukebox.Instance.PlayRandomPeapoleReaction(0.7f, 0.3f);
-            Jukebox.Instance.PlaySoundDelayed(Jukebox.Instance.Crunch, 0.7f, 1.25f);
-            Jukebox.Instance.PlayRandomAttack(0.6f, 0.9f);
+            Jukebox.Instance.PlayRandomPeapoleReaction(0.5f, 0.3f);
+            Jukebox.Instance.PlaySoundDelayed(Jukebox.Instance.Crunch, 0.5f, 1.25f);
+            Jukebox.Instance.PlayRandomAttack(0.5f, 0.9f);
         }
         else
         {

@@ -8,6 +8,8 @@ public class Jukebox : MonoBehaviour
     public static Jukebox Instance;
     public AudioSource TargetSource;
 
+    public AudioClip GoGetMySouls;
+
     public AudioClip HouseHit1;
     public AudioClip HouseHit2;
 
@@ -43,6 +45,7 @@ public class Jukebox : MonoBehaviour
 
     public AudioClip GoodJob;
     public AudioClip GoodJobSoulMine;
+
     public AudioClip YourSoulIsMine;
 
     public AudioClip HeyYou;
@@ -86,6 +89,18 @@ public class Jukebox : MonoBehaviour
         else
         {
             PlaySound(HouseHit2, _volumne);
+        }
+    }
+
+    public void PlayRandomGoodJob(float _volumne, float _delay)
+    {
+        if (Random.Range(0.0f, 1.0f) > 0.5f)
+        {
+            PlaySoundDelayed(GoodJob, _volumne, _delay);
+        }
+        else
+        {
+            PlaySoundDelayed(GoodJob, _volumne, _delay);
         }
     }
 

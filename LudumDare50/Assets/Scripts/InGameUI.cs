@@ -17,8 +17,11 @@ public class InGameUI : MonoBehaviour
 
     public GameObject DynamicObjectContainer;
 
+    public TMP_Text TxtNumAccSouls;
+
     public Image SoulImage;
     public Image OldSoulImage;
+    public Image OldSoulImageAcc;
 
     public static InGameUI Instance;
     public GameObject UIHomeStatsPrefab;
@@ -106,6 +109,18 @@ public class InGameUI : MonoBehaviour
         ProgTimeUntilDawn.SetProgress(GameController.Instance.TimeUntilDawn/PlayerStats.Instance.NightDuration);
         TxtGoBack.enabled = Portal.Instance.CanEnterPortal() && GameController.Instance.GameState == GameState.NIGHT;
         TxtOldSouls.text = GameController.Instance.Bank.Balance.ToString();
+
+        if(GameController.Instance.MissingSoulsToCollect < 0)
+        {
+            ActivateIfNotActive(TxtNumAccSouls);
+            ActivateIfNotActive(OldSoulImageAcc);
+            TxtNumAccSouls.text = "(+" + Mathf.Abs(GameController.Instance.MissingSoulsToCollect).ToString() + ")";
+        }
+        else
+        {
+            DeactivateIfNotActive(TxtNumAccSouls);
+            DeactivateIfNotActive(OldSoulImageAcc);
+        }
     }
 
     private string FormatTime(float _seconds)
@@ -134,4 +149,20 @@ public class InGameUI : MonoBehaviour
         soulVisuals.GetComponent<UITransmutationSoul>().Init(SoulImage.transform, 2, OldSoulImage.transform, _onComplete);
 
     }
+    private void DeactivateIfNotActive(MonoBehaviour _cmp)
+    {
+        if (_cmp.gameObject.activeSelf)
+        {
+            _cmp.gameObject.SetActive(false);
+        }
+    }
+
+    public void ActivateIfNotActive(MonoBehaviour _cmp)
+    {
+        if (!_cmp.gameObject.activeSelf)
+        {
+            _cmp.gameObject.SetActive(true);
+        }
+    }
+
 }

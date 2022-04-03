@@ -75,6 +75,20 @@ public class GameController : MonoBehaviour
 
         Bank.TransmuteSouls();
 
+        Jukebox.Instance.PlaySound(Jukebox.Instance.PortalAbsorbing, 0.6f);
+        if (NumNightsSurvived == 0)
+        {
+            Jukebox.Instance.PlaySoundDelayed(Jukebox.Instance.GoGetMySouls, 0.6f, 0.5f);
+        }
+        else
+        {
+            if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.7f)
+            {
+                Jukebox.Instance.PlaySoundDelayed(Jukebox.Instance.GoGetMySouls, 0.4f, UnityEngine.Random.Range(1.5f, 2.5f));
+            }
+        }
+
+
     }
 
     public void StartDay()
@@ -85,7 +99,10 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetInt("NightsSurvived", NumNightsSurvived);
         GameState = GameState.DAY;
         OnDayStarted?.Invoke();
-    }
+
+        Jukebox.Instance.PlayRandomGoodJob(0.6f, 1f);
+
+   }
 
     public void StartExplaining()
     {
@@ -129,33 +146,46 @@ public class GameController : MonoBehaviour
 
     public void IncreaseSpeeed()
     {
+        Jukebox.Instance.PlaySound(Jukebox.Instance.ButtonPress, 0.5f);
         m_PlayerStats.Speed += m_PlayerStats.Speed * 0.05f;
         StartNight();
     }
 
     public void IncreateNightDuration()
     {
+        Jukebox.Instance.PlaySound(Jukebox.Instance.ButtonPress, 0.5f);
         m_PlayerStats.NightDuration += m_PlayerStats.NightDuration * 0.05f;
         StartNight();
     }
 
     public void IncreaseStrenght()
     {
+        Jukebox.Instance.PlaySound(Jukebox.Instance.ButtonPress, 0.5f);
         m_PlayerStats.Strength += 1;
         StartNight();
     }
 
     public void PlayerKilled()
     {
-        GameOverLoader.Execute();
+        if(GameState == GameState.NIGHT)
+        {
+            Jukebox.Instance.PlaySound(Jukebox.Instance.Die, 0.6f);
+            Jukebox.Instance.PlaySound(Jukebox.Instance.Crunch, 0.7f);
+            GameState = GameState.EXPLAINING;
+            Scheduler.Instance.ExecuteIn(() =>
+            {
+                GameOverLoader.Execute();
+            }, 0.2f);
+
+        }
     }
 
     IEnumerator AnounceDeaths(int _numHumans)
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         MissingSoulsToCollect -= _numHumans;
-        OnHumanKilled?.Invoke(MissingSoulsToCollect);
         OnHumanKillCounterUpdate?.Invoke(MissingSoulsToCollect);
+        OnHumanKilled?.Invoke(MissingSoulsToCollect);
 
     }
 }

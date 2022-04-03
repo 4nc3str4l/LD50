@@ -87,6 +87,7 @@ public class Guard : MonoBehaviour
     public void SetChasing()
     {
         m_CurrentState = State.CHASING;
+        Jukebox.Instance.PlaySound(Jukebox.Instance.HeyYou, 0.6f);
     }
 
     private void UpdatePatrol(float _baseSpeed)
@@ -115,10 +116,15 @@ public class Guard : MonoBehaviour
 
     private void UpdateChase(float _baseSpeed)
     {
-        MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 3);
+
         if(ReachedTarget(PlayerStats.Instance.transform.position, 3.5f, false))
         {
             GameController.Instance.PlayerKilled();
+            m_RigidBody.velocity = Vector3.zero;
+        }
+        else
+        {
+            MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 3);
         }
     }
 

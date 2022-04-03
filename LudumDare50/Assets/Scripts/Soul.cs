@@ -44,13 +44,13 @@ public class Soul : MonoBehaviour
     {
         yield return new WaitForSeconds(m_TravelTime / 4 + Random.Range(0.3f, 0.6f));
         GameObject.Destroy(m_OrbitScript);
-        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulGoing, Random.Range(0.4f, 0.6f));
+        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulGoing, Random.Range(0.2f, 0.4f));
 
         transform.DOMove(Portal.Instance.Door.transform.position, m_TravelTime / 4 * 3).OnComplete(() =>
         {
             Portal.Instance.Shake();
             m_ParticleSystem.transform.SetParent(null);
-            Jukebox.Instance.PlaySound(Jukebox.Instance.PortalAbsorbing, 0.8f);
+            Jukebox.Instance.PlaySound(Jukebox.Instance.PortalAbsorbing, 0.2f);
             GameObject.Destroy(gameObject);
             GameObject.Destroy(m_ParticleSystem.gameObject, 2.0f);
         });

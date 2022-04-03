@@ -34,7 +34,7 @@ public class Portal : MonoBehaviour
         {
             GameObject sp = GameObject.Instantiate(SoulPrefab);
             sp.transform.position = _target.transform.position + Vector3.up * 4.0f;
-            sp.GetComponent<Soul>().Init(Random.Range(5.0f, 10.0f));
+            sp.GetComponent<Soul>().Init(Random.Range(5.0f, 30.0f));
         }
     }
 
@@ -58,7 +58,7 @@ public class Portal : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, PlayerStats.Instance.transform.position) < 12 && CanEnterPortal())
+        if(Vector3.Distance(transform.position, PlayerStats.Instance.transform.position) < 42 && CanEnterPortal())
         {
             if (!Door.activeSelf)
             {
