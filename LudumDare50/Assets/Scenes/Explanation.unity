@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: GameScene
-  Delay: 2
+  Delay: 0
 --- !u!1 &311840910
 GameObject:
   m_ObjectHideFlags: 0
