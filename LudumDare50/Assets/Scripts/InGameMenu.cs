@@ -8,6 +8,8 @@ public class InGameMenu : MonoBehaviour
     public Slider VolumeSlider;
     private CanvasGroup m_CanvasGroup;
 
+    public Toggle ShowTutorialToggle;
+
     private void Awake()
     {
         m_CanvasGroup = GetComponent<CanvasGroup>();
@@ -16,6 +18,7 @@ public class InGameMenu : MonoBehaviour
     private void Start()
     {
         VolumeSlider.value = VolumeMaster.Instance.Volume;
+        ShowTutorialToggle.isOn = Storage.GetTutorialEnabled();
     }
 
     public void OnVolumeChanged(float _volumne)
@@ -41,6 +44,11 @@ public class InGameMenu : MonoBehaviour
                 Show();
             }
         }
+    }
+
+    public void OnShowTutorialClicked(bool _shouldShow)
+    {
+        Storage.SetTutorialEnabled(_shouldShow);
     }
 
     public void Show()
