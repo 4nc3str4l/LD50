@@ -4,7 +4,7 @@
     private float m_SpeedIncrease;
 
     public SprintSkill(UISkill _ui) :
-        base("Sprint", 10, 1, 5.0f, 10.0f, _ui)
+        base("Sprint", 5, 2, 5.0f, 10.0f, _ui)
     {
     }
 

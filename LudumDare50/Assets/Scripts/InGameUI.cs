@@ -45,6 +45,7 @@ public class InGameUI : MonoBehaviour
     public Vector3 m_TimeUntilDawnTargetPos;
     public Vector3 m_TimeUntilDawnTargetScale;
 
+    public bool SkipReposition = true;
 
     private void Awake()
     {
@@ -55,7 +56,6 @@ public class InGameUI : MonoBehaviour
         m_InitialUIOldSoulScale = TxtOldSouls.transform.localScale;
         m_InitialImgOldSoulScale = OldSoulImage.transform.localScale;
 
-        m_TimeUntilDawnPosition = ProgressUntilDawnObj.transform.position;
         m_TimeUntilDawnScale = ProgressUntilDawnObj.transform.localScale;
 
     }
@@ -196,7 +196,11 @@ public class InGameUI : MonoBehaviour
 
     private void ResetCountdownPositionAndScale()
     {
-        ProgressUntilDawnObj.transform.position = m_TimeUntilDawnPosition;
+        if (SkipReposition)
+        {
+            SkipReposition = false;
+            return; 
+        }
         ProgressUntilDawnObj.transform.localScale = m_TimeUntilDawnScale;
     }
 

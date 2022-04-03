@@ -5,7 +5,7 @@ public class AssasinSoulStorm : Skill
 
     private GameObject m_AssasinSoulPrefab;
 
-    public AssasinSoulStorm(UISkill _ui, GameObject _prefab) : base("Death Storm", 100, 4, 5.0f, 10.0f, _ui)
+    public AssasinSoulStorm(UISkill _ui, GameObject _prefab) : base("Death Storm", 40, 5, 5.0f, 10.0f, _ui)
     {
         m_AssasinSoulPrefab = _prefab;
     }

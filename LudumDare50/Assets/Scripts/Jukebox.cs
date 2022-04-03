@@ -59,9 +59,31 @@ public class Jukebox : MonoBehaviour
     public AudioClip Invisibility;
     public AudioClip SoulStorm;
 
+    public AudioClip ScareSound_1;
+    public AudioClip ScareSound_2;
+    public AudioClip ScareSound_3;
+    public AudioClip ScareSound_4;
+    public AudioClip ScareSound_5;
+    public AudioClip ScareSound_6;
+    public AudioClip ScareSound_7;
+    public AudioClip ScareSound_8;
+    public AudioClip ScareSound_9;
+    public AudioClip ScareSound_10;
+    public AudioClip ScareSound_11;
+    public AudioClip ScareSound_12;
+
+    public AudioClip SoulFury;
+
+
+    public AudioClip TimeThreshold;
+    public AudioClip Timeout;
+
+    public AudioClip FootStep;
+
     private List<AudioClip> m_PeapoleReactions = new List<AudioClip>();
 
     private List<AudioClip> m_Attacks = new List<AudioClip>();
+
 
     private void Awake()
     {
@@ -74,6 +96,20 @@ public class Jukebox : MonoBehaviour
         m_PeapoleReactions.Add(ThatsMaSoul);
         m_PeapoleReactions.Add(GirlNoo);
         m_PeapoleReactions.Add(Ahh);
+
+        m_PeapoleReactions.Add(ScareSound_1);
+        m_PeapoleReactions.Add(ScareSound_2);
+        m_PeapoleReactions.Add(ScareSound_3);
+        m_PeapoleReactions.Add(ScareSound_4);
+        m_PeapoleReactions.Add(ScareSound_5);
+        m_PeapoleReactions.Add(ScareSound_6);
+        m_PeapoleReactions.Add(ScareSound_7);
+        m_PeapoleReactions.Add(ScareSound_8);
+        m_PeapoleReactions.Add(ScareSound_9);
+        m_PeapoleReactions.Add(ScareSound_10);
+        m_PeapoleReactions.Add(ScareSound_11);
+        m_PeapoleReactions.Add(ScareSound_12);
+
 
         m_Attacks.Add(Attack1);
         m_Attacks.Add(Attack2);

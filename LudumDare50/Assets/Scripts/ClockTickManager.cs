@@ -53,14 +53,17 @@ public class ClockTickManager : MonoBehaviour
 
     private void TimeController_OnLessThan10Secs()
     {
+        m_Source.PlayOneShot(Jukebox.Instance.Timeout);
     }
 
     private void TimeController_OnLessThan30Secs()
     {
+        m_Source.PlayOneShot(Jukebox.Instance.TimeThreshold);
     }
 
     private void TimeController_OnLessThan1Min()
     {
+        m_Source.PlayOneShot(Jukebox.Instance.TimeThreshold);
     }
 
 }

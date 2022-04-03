@@ -9,6 +9,12 @@ public class VampireMovement : MonoBehaviour
     private Vector3 m_OriginalPosition;
     private Quaternion m_OriginalRotation;
 
+    private bool m_IsMoving = false;
+
+    public float FootStepRate = 0.2f;
+    private float m_NextFootStep = 0;
+
+
     private void Awake()
     {
         m_PlayerStats = GetComponent<PlayerStats>();
@@ -52,7 +58,22 @@ public class VampireMovement : MonoBehaviour
 
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
+
         m_RigidBody.velocity = (-transform.right * vertical) * m_PlayerStats.Speed * Time.fixedDeltaTime;
         transform.Rotate((transform.up * horizontal) * 200 * Time.fixedDeltaTime);
+
+        m_IsMoving = vertical != 0 || horizontal != 0;
+    }
+
+    private void Update()
+    {
+        if (m_IsMoving)
+        {
+            if(Time.time > m_NextFootStep)
+            {
+                Jukebox.Instance.PlaySound(Jukebox.Instance.FootStep, 0.075f);
+                m_NextFootStep = Time.time + FootStepRate;
+            }
+        }
     }
 }

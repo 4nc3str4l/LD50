@@ -4,7 +4,7 @@ public class SoulStormSkill : Skill
 {
 
 
-    public SoulStormSkill(UISkill _ui) : base("Soul Storm", 50, 3, 20.0f, 10.0f, _ui)
+    public SoulStormSkill(UISkill _ui) : base("Soul Storm", 15, 4, 20.0f, 10.0f, _ui)
     {
 
     }

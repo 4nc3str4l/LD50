@@ -16,9 +16,10 @@ public class Guard : MonoBehaviour
 
     public GuardSensor m_Sensors;
 
-
     private State m_CurrentState;
 
+    public const float TIME_TO_SPONTANEOUS_CHANGE = 60f;
+    public float m_SpontaneusWayChange = 0;
 
     public enum State
     {
@@ -113,6 +114,17 @@ public class Guard : MonoBehaviour
     {
         m_CurrentState = State.PATROL;
         TargetPatrolPoint = OwnerDistict.GetClosestPatrolPoint(gameObject);
+        m_SpontaneusWayChange = Time.time + TIME_TO_SPONTANEOUS_CHANGE;
+    }
+
+    void SpontaneousDesicion()
+    {
+        if(m_SpontaneusWayChange <= Time.time)
+        {
+            RecomputePath(OwnerDistict.GetRandomIndex());
+            m_SpontaneusWayChange = Time.time + TIME_TO_SPONTANEOUS_CHANGE + Random.Range(-10f, 10f);
+            Debug.Log("Spontaneous Desicion");
+        }
     }
 
     public void SetChasing()
@@ -169,7 +181,10 @@ public class Guard : MonoBehaviour
             }
         }
         MoveTowardsTarget(TargetPatrolPoint.transform.position, _baseSpeed);
+
+        SpontaneousDesicion();
     }
+
 
     private void RecomputePath(int _target)
     {
@@ -188,7 +203,7 @@ public class Guard : MonoBehaviour
         }
         else
         {
-            MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 3);
+            MoveTowardsTarget(PlayerStats.Instance.transform.position, _baseSpeed * 2);
         }
     }
 

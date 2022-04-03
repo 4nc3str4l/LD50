@@ -7,6 +7,9 @@ public class SkillManager : MonoBehaviour
 
     public GameObject AssasinSoulPrefab;
 
+    public UISkill UIFurySkill;
+    private FuriousHands m_FurySkill;
+
     public UISkill UISprint;
     private SprintSkill m_Sprint;
 
@@ -28,6 +31,7 @@ public class SkillManager : MonoBehaviour
 
     private void Start()
     {
+        m_FurySkill = new FuriousHands(UIFurySkill);
         m_Sprint = new SprintSkill(UISprint);
         m_InvisibilitySkill = new InvisibilitySkill(UIInvisibilitySkill);
         m_SoulStorm = new SoulStormSkill(UISoulStorm);
@@ -36,27 +40,37 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            ActivateSprint();
+            ActivateFury();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            ActivateInvisibility();
+            ActivateSprint();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            ActivateSoulStorm();
+            ActivateInvisibility();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ActivateSoulStorm();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             ActivateAssasinSoulStorm();
         }
 
         UpdateActiveSkills();
+    }
+
+    public void ActivateFury()
+    {
+        ActivateSkill(m_FurySkill);
     }
 
     public void ActivateSprint()
