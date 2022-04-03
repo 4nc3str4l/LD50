@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-public class SoulStormSkill : Skill
+public class AssasinSoulStorm : Skill
 {
 
+    private GameObject m_AssasinSoulPrefab;
 
-    public SoulStormSkill(UISkill _ui) : base("Soul Storm", 50, 3, 20.0f, 10.0f, _ui)
+    public AssasinSoulStorm(UISkill _ui, GameObject _prefab) : base("Death Storm", 100, 4, 5.0f, 10.0f, _ui)
     {
-
+        m_AssasinSoulPrefab = _prefab;
     }
 
     protected override void OnActivate()
@@ -15,7 +16,11 @@ public class SoulStormSkill : Skill
 
         foreach(Guard g in guards)
         {
-            g.Stun(20);
+            if(g != null)
+            {
+                GameObject soul = GameObject.Instantiate(m_AssasinSoulPrefab);
+                soul.GetComponent<AssasinSoul>().Init(Random.Range(1.0f, 3.0f), g);
+            }
         }
 
         WeatherManager.Instance.SetSunlightColor(Color.red, 1.2f);

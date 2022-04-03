@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class Guard : MonoBehaviour
 {
     public District OwnerDistict;
@@ -16,10 +16,16 @@ public class Guard : MonoBehaviour
 
     public GuardSensor m_Sensors;
 
-    private enum State
+
+    private State m_CurrentState;
+
+
+    public enum State
     {
         PATROL,
-        CHASING
+        CHASING,
+        DEAD,
+        STUNNED,
     }
 
     private void Awake()
@@ -27,7 +33,6 @@ public class Guard : MonoBehaviour
         m_Sensors = GetComponentInChildren<GuardSensor>();
     }
 
-    private State m_CurrentState;
 
     public void Init(District _spawner, PatrolPoint _p)
     {
@@ -70,6 +75,10 @@ public class Guard : MonoBehaviour
             case State.PATROL:
                 UpdatePatrol(baseSpeed);
                 break;
+            case State.DEAD:
+                break;
+            case State.STUNNED:
+                break;
             default:
                 break;
         }
@@ -110,6 +119,39 @@ public class Guard : MonoBehaviour
     {
         m_CurrentState = State.CHASING;
         Jukebox.Instance.PlaySound(Jukebox.Instance.HeyYou, 0.6f);
+    }
+
+    public void SetDead()
+    {
+        m_CurrentState = State.DEAD;
+    }
+
+    public void Stun(float _seconds)
+    {
+        State lastState = m_CurrentState;
+        m_CurrentState = State.STUNNED;
+        m_Sensors.gameObject.SetActive(false);
+        m_RigidBody.velocity = Vector3.zero;
+
+        Vector3 originalScale = transform.localScale;
+        transform.DOShakeScale(_seconds / 2).OnComplete(()=>
+        {
+            if(transform != null)
+            {
+                transform.localScale = originalScale;
+            }
+        });
+
+        transform.DOShakePosition(_seconds).OnComplete(() => {
+            if (m_Sensors != null)
+            {
+                if (m_CurrentState != State.DEAD)
+                {
+                    m_Sensors.gameObject.SetActive(true);
+                    m_CurrentState = lastState;
+                }
+            }
+        });
     }
 
     private void UpdatePatrol(float _baseSpeed)
@@ -187,5 +229,10 @@ public class Guard : MonoBehaviour
     private bool IsAlerted()
     {
         return m_TimeUntilUnalert >= Time.time;
+    }
+
+    public State CurrentState()
+    {
+        return m_CurrentState;
     }
 }

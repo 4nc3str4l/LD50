@@ -5,6 +5,8 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance;
 
+    public GameObject AssasinSoulPrefab;
+
     public UISkill UISprint;
     private SprintSkill m_Sprint;
 
@@ -13,6 +15,9 @@ public class SkillManager : MonoBehaviour
 
     public UISkill UISoulStorm;
     private SoulStormSkill m_SoulStorm;
+
+    public UISkill UIAssasinSoulStorm;
+    private AssasinSoulStorm m_AssasinSoulStorm;
 
     private List<Skill> m_SkillsToDeactivate = new List<Skill>();
 
@@ -26,6 +31,7 @@ public class SkillManager : MonoBehaviour
         m_Sprint = new SprintSkill(UISprint);
         m_InvisibilitySkill = new InvisibilitySkill(UIInvisibilitySkill);
         m_SoulStorm = new SoulStormSkill(UISoulStorm);
+        m_AssasinSoulStorm = new AssasinSoulStorm(UIAssasinSoulStorm, AssasinSoulPrefab);
     }
 
     private void Update()
@@ -45,6 +51,11 @@ public class SkillManager : MonoBehaviour
             ActivateSoulStorm();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ActivateAssasinSoulStorm();
+        }
+
         UpdateActiveSkills();
     }
 
@@ -59,10 +70,14 @@ public class SkillManager : MonoBehaviour
         ActivateSkill(m_InvisibilitySkill);
     }
 
-
     public void ActivateSoulStorm()
     {
         ActivateSkill(m_SoulStorm);
+    }
+
+    public void ActivateAssasinSoulStorm()
+    {
+        ActivateSkill(m_AssasinSoulStorm);
     }
 
     public void ActivateSkill(Skill _skill)
@@ -89,7 +104,7 @@ public class SkillManager : MonoBehaviour
         for(int i = m_SkillsToDeactivate.Count -1; i >= 0; --i)
         {
             skill = m_SkillsToDeactivate[i];
-            if (skill.IsActive())
+            if (skill.IsActive() && GameController.Instance.GameState !=  GameState.DAY)
             {
                 skill.Update();
             }

@@ -9,7 +9,7 @@ public class InvisibilitySkill : Skill
 
 
 
-    public InvisibilitySkill(UISkill _ui) : base("Invisibility", 20, 1, 5.0f, 10.0f, _ui)
+    public InvisibilitySkill(UISkill _ui) : base("Invisibility", 20, 2, 5.0f, 10.0f, _ui)
     {
 
     }

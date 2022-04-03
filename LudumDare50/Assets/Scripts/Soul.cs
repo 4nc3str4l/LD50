@@ -13,7 +13,7 @@ public class Soul : MonoBehaviour
     {
         m_TravelTime = _travelTime;
         m_ParticleSystem = GetComponentInChildren<ParticleSystem>();
-        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulGoing, 0.7f);
+        Jukebox.Instance.PlaySound(Jukebox.Instance.SoulGoing, Random.Range(0.3f, 0.6f));
         transform.DOMove(transform.position + Vector3.up * 15 + new Vector3(Random.Range(-3f, 3f), 0, Random.Range(-3f, 3f)), _travelTime / 4).OnComplete(()=>
         {
             m_OrbitScript = gameObject.AddComponent<Orbit>();
