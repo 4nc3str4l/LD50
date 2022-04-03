@@ -26,6 +26,7 @@ public class Bulding : MonoBehaviour
     {
         AlarmSys = GetComponentInChildren<AlarmSystem>(true);
         m_OwnerDistrict = GetComponentInParent<District>();
+        m_OwnerDistrict.DistrictBuildings.Add(this);
         InGameUI.Instance.SpawnHomeUI(this);
         m_OriginalPos = transform.position;
     }
@@ -33,11 +34,15 @@ public class Bulding : MonoBehaviour
     private void OnEnable()
     {
         GameController.OnNightStarted += GameController_OnNightStarted;
+        GameController.OnDayStarted += GameController_OnDayStarted;
     }
+
+
 
     private void OnDisable()
     {
         GameController.OnNightStarted -= GameController_OnNightStarted;
+        GameController.OnDayStarted -= GameController_OnDayStarted;
     }
 
     private void GameController_OnNightStarted()
@@ -78,18 +83,27 @@ public class Bulding : MonoBehaviour
         DefensePoints = StartDefensePoints;
         HumansInside = true;
 
-        if(!Alarm)
+
+        AlarmGo.SetActive(Alarm);
+
+        // Inform the district about the attack
+        m_OwnerDistrict.OnHomeAttacked();
+    }
+
+    private void GameController_OnDayStarted()
+    {
+        if (HumansInside)
+        {
+            return;
+        }
+
+        if (!Alarm)
         {
             if (UnityEngine.Random.Range(0, 1.0f) > 0.8f)
             {
                 Alarm = true;
             }
         }
-
-        AlarmGo.SetActive(Alarm);
-
-        // Inform the district about the attack
-        m_OwnerDistrict.OnHomeAttacked();
     }
 
 
@@ -113,6 +127,7 @@ public class Bulding : MonoBehaviour
             DefensePoints = 0;
             HumansInside = false;
 
+            District.DeclareAttackedDistrict(m_OwnerDistrict);
             Scheduler.Instance.ExecuteIn(() =>
             {
                 GameController.Instance.FireOnHumanKilled(NumHumans);

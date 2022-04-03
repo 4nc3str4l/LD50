@@ -14,10 +14,17 @@ public class Guard : MonoBehaviour
     public float m_TimeUntilUnalert = 0;
     public float m_AlertTime = 0;
 
+    public GuardSensor m_Sensors;
+
     private enum State
     {
         PATROL,
         CHASING
+    }
+
+    private void Awake()
+    {
+        m_Sensors = GetComponentInChildren<GuardSensor>();
     }
 
     private State m_CurrentState;
@@ -71,11 +78,26 @@ public class Guard : MonoBehaviour
     private void OnEnable()
     {
         GameController.OnDayStarted += GameController_OnDayStarted;
+        InvisibilitySkill.OnInvisibilityStarted += InvisibilitySkill_OnInvisibilityStarted;
+        InvisibilitySkill.OnInvisibilityEnded += InvisibilitySkill_OnInvisibilityEnded;
     }
 
     private void OnDisable()
     {
         GameController.OnDayStarted -= GameController_OnDayStarted;
+        InvisibilitySkill.OnInvisibilityStarted -= InvisibilitySkill_OnInvisibilityStarted;
+        InvisibilitySkill.OnInvisibilityEnded -= InvisibilitySkill_OnInvisibilityEnded;
+    }
+
+    private void InvisibilitySkill_OnInvisibilityEnded()
+    {
+        m_Sensors.gameObject.SetActive(true);
+    }
+
+    private void InvisibilitySkill_OnInvisibilityStarted()
+    {
+        m_Sensors.gameObject.SetActive(false);
+        SetPatrol();
     }
 
     public void SetPatrol()

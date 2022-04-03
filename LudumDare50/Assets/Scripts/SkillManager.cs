@@ -8,6 +8,12 @@ public class SkillManager : MonoBehaviour
     public UISkill UISprint;
     private SprintSkill m_Sprint;
 
+    public UISkill UIInvisibilitySkill;
+    private InvisibilitySkill m_InvisibilitySkill;
+
+    public UISkill UISoulStorm;
+    private SoulStormSkill m_SoulStorm;
+
     private List<Skill> m_SkillsToDeactivate = new List<Skill>();
 
     private void Awake()
@@ -18,6 +24,8 @@ public class SkillManager : MonoBehaviour
     private void Start()
     {
         m_Sprint = new SprintSkill(UISprint);
+        m_InvisibilitySkill = new InvisibilitySkill(UIInvisibilitySkill);
+        m_SoulStorm = new SoulStormSkill(UISoulStorm);
     }
 
     private void Update()
@@ -27,12 +35,34 @@ public class SkillManager : MonoBehaviour
             ActivateSprint();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ActivateInvisibility();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ActivateSoulStorm();
+        }
+
         UpdateActiveSkills();
     }
 
     public void ActivateSprint()
     {
         ActivateSkill(m_Sprint);
+    }
+
+
+    public void ActivateInvisibility()
+    {
+        ActivateSkill(m_InvisibilitySkill);
+    }
+
+
+    public void ActivateSoulStorm()
+    {
+        ActivateSkill(m_SoulStorm);
     }
 
     public void ActivateSkill(Skill _skill)

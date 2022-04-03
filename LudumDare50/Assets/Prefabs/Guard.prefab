@@ -213,6 +213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OwnerDistict: {fileID: 0}
   WalkingSpeed: 0
+  m_TimeUntilUnalert: 0
+  m_AlertTime: 0
+  m_Sensors: {fileID: 0}
 --- !u!136 &1919018822374821561
 CapsuleCollider:
   m_ObjectHideFlags: 0

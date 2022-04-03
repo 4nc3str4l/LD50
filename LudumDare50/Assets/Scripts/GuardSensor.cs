@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GuardSensor : MonoBehaviour
 {
-
     private Guard m_Guard;
 
     private void Awake()
@@ -12,7 +11,9 @@ public class GuardSensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<PlayerStats>() != null)
+        PlayerStats stats = other.GetComponent<PlayerStats>();
+
+        if (stats != null && !stats.IsInvisible)
         {
             m_Guard.SetChasing();
         }

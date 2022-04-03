@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-
     public int NumNightsSurvived = 0;
 
     public static GameController Instance;
 
     public GameState GameState = GameState.NIGHT;
 
-    public float TimeUntilDawn = 120f;
-
     private float m_NightStartedTime = 0;
-    private float m_DayTime = 0;
 
     public int MissingSoulsToCollect = 1;
 
@@ -30,8 +26,12 @@ public class GameController : MonoBehaviour
 
     public SoulBank Bank;
 
+    public TimeController TimeControl;
+    
+
     private void Awake()
     {
+        TimeControl = gameObject.AddComponent<TimeController>();
         Instance = this;
         Storage.SetNightsSurvived(0);
     }
@@ -66,8 +66,7 @@ public class GameController : MonoBehaviour
     {
         m_PlayerStats.SoulsToCollect += 1;
         m_NightStartedTime = Time.time;
-        TimeUntilDawn = m_PlayerStats.NightDuration;
-        m_DayTime = Time.time + m_PlayerStats.NightDuration;
+        TimeControl.Reset(m_PlayerStats.NightDuration);
         MissingSoulsToCollect = m_PlayerStats.SoulsToCollect;
         OnHumanKillCounterUpdate?.Invoke(MissingSoulsToCollect);
         GameState = GameState.NIGHT;
@@ -116,9 +115,8 @@ public class GameController : MonoBehaviour
 
     private void UpdateNight()
     {
-        TimeUntilDawn = m_DayTime - Time.time;
 
-        if(TimeUntilDawn <= 0)
+        if(TimeControl.TimeUntilDawn <= 0)
         {
             PlayerKilled();
         }
@@ -154,7 +152,7 @@ public class GameController : MonoBehaviour
     public void IncreateNightDuration()
     {
         Jukebox.Instance.PlaySound(Jukebox.Instance.ButtonPress, 0.5f);
-        m_PlayerStats.NightDuration += m_PlayerStats.NightDuration * 0.05f;
+        m_PlayerStats.NightDuration += 10;
         StartNight();
     }
 

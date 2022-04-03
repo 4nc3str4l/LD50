@@ -56,6 +56,8 @@ public class Jukebox : MonoBehaviour
 
     public AudioClip Alarm;
 
+    public AudioClip Invisibility;
+    public AudioClip SoulStorm;
 
     private List<AudioClip> m_PeapoleReactions = new List<AudioClip>();
 

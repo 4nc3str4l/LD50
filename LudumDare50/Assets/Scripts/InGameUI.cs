@@ -8,7 +8,6 @@ using System.Collections;
 public class InGameUI : MonoBehaviour
 {
     public TMP_Text TxtHumansToKill;
-    public TMP_Text TxtTimeUntilDawn;
 
     public TMP_Text TxtSoulsToCollect;
     public TMP_Text TxtGoBack;
@@ -27,6 +26,8 @@ public class InGameUI : MonoBehaviour
     public GameObject UIHomeStatsPrefab;
 
     public ProgressBar ProgTimeUntilDawn;
+    public GameObject ProgressUntilDawnObj;
+    public TMP_Text TxtTimeUntilDawn;
 
     private Vector3 m_InitialUISoulScale;
     private Vector3 m_InitialImgSoulScale;
@@ -38,6 +39,13 @@ public class InGameUI : MonoBehaviour
     public GameObject UITravelingSoulPrefab;
     public GameObject UITransmutingSoulsPrefab;
 
+    private Vector3 m_TimeUntilDawnPosition;
+    private Vector3 m_TimeUntilDawnScale;
+
+    public Vector3 m_TimeUntilDawnTargetPos;
+    public Vector3 m_TimeUntilDawnTargetScale;
+
+
     private void Awake()
     {
         Instance = this;
@@ -46,6 +54,10 @@ public class InGameUI : MonoBehaviour
 
         m_InitialUIOldSoulScale = TxtOldSouls.transform.localScale;
         m_InitialImgOldSoulScale = OldSoulImage.transform.localScale;
+
+        m_TimeUntilDawnPosition = ProgressUntilDawnObj.transform.position;
+        m_TimeUntilDawnScale = ProgressUntilDawnObj.transform.localScale;
+
     }
 
     private void OnEnable()
@@ -54,13 +66,24 @@ public class InGameUI : MonoBehaviour
         Bulding.OnBuldingKilled += Bulding_OnBuldingKilled;
 
         SoulBank.OnSoulBalanceChanged += SoulBank_OnSoulBalanceChanged;
+
+        TimeController.OnLessThan1Min += TimeController_OnLessThan1Min;
+        TimeController.OnLessThan30Secs += TimeController_OnLessThan30Secs;
+        TimeController.OnLessThan10Secs += TimeController_OnLessThan10Secs;
+        TimeController.OnMoreThan1Min += TimeController_OnMoreThan1Min;
     }
+
 
     private void OnDisable()
     {
         GameController.OnHumanKillCounterUpdate -= GameController_OnHumanKillCounterUpdate;
         Bulding.OnBuldingKilled -= Bulding_OnBuldingKilled;
         SoulBank.OnSoulBalanceChanged -= SoulBank_OnSoulBalanceChanged;
+        TimeController.OnLessThan1Min -= TimeController_OnLessThan1Min;
+        TimeController.OnLessThan30Secs -= TimeController_OnLessThan30Secs;
+        TimeController.OnLessThan10Secs -= TimeController_OnLessThan10Secs;
+        TimeController.OnMoreThan1Min -= TimeController_OnMoreThan1Min;
+
     }
 
     private void Bulding_OnBuldingKilled(Bulding _target, int numSouls)
@@ -105,8 +128,8 @@ public class InGameUI : MonoBehaviour
 
     private void Update()
     {
-        TxtTimeUntilDawn.text = "Time until dawn: " + FormatTime(GameController.Instance.TimeUntilDawn);
-        ProgTimeUntilDawn.SetProgress(GameController.Instance.TimeUntilDawn/PlayerStats.Instance.NightDuration);
+        TxtTimeUntilDawn.text = "Time until dawn: " + FormatTime(GameController.Instance.TimeControl.TimeUntilDawn);
+        ProgTimeUntilDawn.SetProgress(GameController.Instance.TimeControl.TimeUntilDawn/PlayerStats.Instance.NightDuration);
         TxtGoBack.enabled = Portal.Instance.CanEnterPortal() && GameController.Instance.GameState == GameState.NIGHT;
         TxtOldSouls.text = GameController.Instance.Bank.Balance.ToString();
 
@@ -164,5 +187,43 @@ public class InGameUI : MonoBehaviour
             _cmp.gameObject.SetActive(true);
         }
     }
+
+
+    private void TimeController_OnMoreThan1Min()
+    {
+        ResetCountdownPositionAndScale();
+    }
+
+    private void ResetCountdownPositionAndScale()
+    {
+        ProgressUntilDawnObj.transform.position = m_TimeUntilDawnPosition;
+        ProgressUntilDawnObj.transform.localScale = m_TimeUntilDawnScale;
+    }
+
+    private void TimeController_OnLessThan1Min()
+    {
+        ProgressUntilDawnObj.transform.DOShakeScale(1f).OnComplete(() =>
+        {
+            ResetCountdownPositionAndScale();
+        });
+    }
+
+    private void TimeController_OnLessThan10Secs()
+    {
+        ProgressUntilDawnObj.transform.DOShakeScale(10f).OnComplete(() =>
+        {
+            ResetCountdownPositionAndScale();
+        });
+    }
+
+    private void TimeController_OnLessThan30Secs()
+    {
+        ProgressUntilDawnObj.transform.DOShakeScale(3f).OnComplete(() =>
+        {
+            ResetCountdownPositionAndScale();
+        });
+    }
+
+
 
 }

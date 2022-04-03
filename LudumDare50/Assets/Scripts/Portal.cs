@@ -34,7 +34,7 @@ public class Portal : MonoBehaviour
         {
             GameObject sp = GameObject.Instantiate(SoulPrefab);
             sp.transform.position = _target.transform.position + Vector3.up * 4.0f;
-            sp.GetComponent<Soul>().Init(Random.Range(5.0f, 30.0f));
+            sp.GetComponent<Soul>().Init(Random.Range(5.0f, 10.0f));
         }
     }
 

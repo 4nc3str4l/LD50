@@ -1,11 +1,11 @@
-﻿public class SprintSkill : Skill
+﻿public class SoulStormSkill : Skill
 {
 
     private float m_SpeedIncrease;
 
-    public SprintSkill(UISkill _ui) :
-        base("Sprint", 10, 1, 5.0f, 10.0f, _ui)
-    {
+    public SoulStormSkill(UISkill _ui) : base("Soul Storm", 50, 1, 20.0f, 10.0f, _ui)
+    { 
+
     }
 
     protected override void OnActivate()

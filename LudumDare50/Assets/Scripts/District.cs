@@ -18,9 +18,12 @@ public class District : MonoBehaviour
 
     public event Action<int> OnGoToBuldingRequired;
 
+    public static List<District> AttackedDistrics;
+    public List<Bulding> DistrictBuildings = new List<Bulding>();
+
     private void Awake()
     {
-
+        AttackedDistrics = new List<District>();
         DistrictText.text = "District " + DistrictNumber;
 
         for (int i = 0; i < PatrolPoints.Length; ++i)
@@ -50,6 +53,11 @@ public class District : MonoBehaviour
 
     private void GameController_OnNightStarted()
     {
+        if(DistrictNumber == 1)
+        {
+            AttackedDistrics.Clear();
+        }
+
         for(int i = 0; i < NumWatchersToSpawn; ++i)
         {
             SpawnGuard();
@@ -64,7 +72,11 @@ public class District : MonoBehaviour
     public void OnHomeAttacked()
     {
         KillCounter += 1;
-        NumWatchersToSpawn += 1;
+
+        if(UnityEngine.Random.Range(0.0f, 1.0f) > 0.7f)
+        {
+            NumWatchersToSpawn += 1;
+        }
     }
 
     public void SpawnGuard()
@@ -163,5 +175,44 @@ public class District : MonoBehaviour
     public int GetRandomIndex()
     {
         return UnityEngine.Random.Range(0, PatrolPoints.Length);
+    }
+
+    public static void DeclareAttackedDistrict(District _district)
+    {
+        if(AttackedDistrics.Contains(_district))
+        {
+            return;
+        }
+
+        AttackedDistrics.Add(_district);
+    }
+
+    public string GetSecurityReport()
+    {
+        int numAlarms = 0;
+        foreach(Bulding b in DistrictBuildings)
+        {
+            if (b.Alarm)
+            {
+                numAlarms += 1;
+            }
+        }
+        string districtReport = "District " + DistrictNumber +  ": ";
+        if (numAlarms == 0 && NumWatchersToSpawn == 0)
+        {
+            return districtReport + " (Nothing For Now, our population feels safe)";
+        }
+        else if(numAlarms > 0 && NumWatchersToSpawn == 0)
+        {
+            return districtReport + numAlarms + " home have alarms installed (no private security for now)";
+        }
+        else if(numAlarms == 0 && NumWatchersToSpawn > 0)
+        {
+            return districtReport + NumWatchersToSpawn + " where hired for tonight to improve security as we have been attacked";
+        }
+        else
+        {
+            return districtReport + " The situation in is bad, now we have " + numAlarms + " homes with alarms and " + NumWatchersToSpawn + " guards hired";
+        }
     }
 }

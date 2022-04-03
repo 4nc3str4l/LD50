@@ -11,6 +11,8 @@ public class PlayerStats : MonoBehaviour
     public int Strength = 1;
     public float Resistence = 0.0f;
 
+    public bool IsInvisible = false;
+
     private void Awake()
     {
         Instance = this;
