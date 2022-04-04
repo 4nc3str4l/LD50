@@ -15490,6 +15490,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 44038907}
     m_Modifications:
+    - target: {fileID: 9071039309808979834, guid: 54850fb979660c4488f9aeeaecf94904, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 664e4efcb25414a4e8704c9b7c396402, type: 3}
     - target: {fileID: 9071039309969339152, guid: 54850fb979660c4488f9aeeaecf94904, type: 3}
       propertyPath: m_Name
       value: UIFury
